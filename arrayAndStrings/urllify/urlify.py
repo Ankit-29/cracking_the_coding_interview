@@ -8,7 +8,6 @@ from typing import List
 
 def urlify(url: List[str], trueLength: int) -> bool:
     spaceCount = 0
-    print(url[2])
     for char in url:
         spaceCount += 1 if char == ' ' else 0
 
