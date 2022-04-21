@@ -9,24 +9,35 @@
     pale, bake -> false
 '''
 
-
-def oneEditAway(word1: str, word2: str) -> int:
+def oneEditAway(word1: str, word2: str) -> bool:
     if (abs(len(word1) - len(word2)) > 1):
-        return False
+        return False # Return false if difference in length is greater than 1
 
-    charHash = [0] * 128
-    for char in list(word1):
-        charCode = ord(char)
-        charHash[charCode] += 1
+    # make smaller string str1
+    str1 = word1 if len(word1) < len(word2) else word2
+    str2 = word2 if len(word1) < len(word2) else word1
 
-    for char in list(word2):
-        charCode = ord(char)
-        charHash[charCode] -= 1 if charHash[charCode] != 0 else 0
+    idx1 = idx2 = 0
+    isDifferenceFound = False
 
-    return sum(charHash) <= 1
+    while(idx1 < len(str1) and idx2 < len(str2)):
+        if(str1[idx1] != str2[idx2]):
+            # return false is more than one difference is found
+            if(isDifferenceFound): return False
+ 
+            isDifferenceFound = True
 
+            # when strings have equal length increase idx1
+            if(len(str1) == len(str2)): idx1 += 1
+        else:
+            idx1 += 1
 
-word1 = "pales"
-word2 = "pale"
-print(oneEditAway(word1,word2))
-# Output: True
+        # longer string's index will always increase
+        idx2 += 1
+
+    return True
+
+print(oneEditAway("paie","pie"))
+print(oneEditAway("pales","pale"))
+print(oneEditAway("pale","bale"))
+print(oneEditAway("pale","bake"))

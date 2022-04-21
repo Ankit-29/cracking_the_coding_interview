@@ -12,24 +12,36 @@
 
 oneEditAway = (word1, word2) => {
     if (Math.abs(word1.length - word2.length) > 1) {
-        return False
+        return false; // Return false if difference in length is greater than 1
     }
 
-    charHash = new Array(128).fill(0);
-    for (let i = 0; i < word1.length; i++) {
-        charCode = word1.charCodeAt(i);
-        charHash[charCode] += 1;
-    }
+    // make smaller string str1
+    const str1 = word1.length < word2.length ? word1 : word2;
+    const str2 = word1.length < word2.length ? word2 : word1;
 
-    for (let i = 0; i < word2.length; i++) {
-        charCode = word2.charCodeAt(i);
-        charHash[charCode] -= charHash[charCode] != 0 ? 1 : 0;
+    let idx1 = 0, idx2 = 0;
+    let isDifferenceFound = false;
+
+    while (idx1 < str1.length && idx2 < str2.length) {
+        if (str1[idx1] != str2[idx2]) {
+            // return false is more than one difference is found
+            if (isDifferenceFound) return false;
+
+            isDifferenceFound = true;
+
+            // when strings have equal length increase idx1
+            if (str1.length === str2.length) idx1++;
+        } else {
+            idx1++;
+        }
+        // longer string's index will always increase
+        idx2++;
     }
-    
-    return charHash.reduce((x, y) => x + y) <= 1;
+    return true;
+
 };
 
-const word1 = "pales";
-const word2 = "pale";
-console.log(oneEditAway(word1, word2))
-// Output: true
+console.log(oneEditAway("paie", "pie"));
+console.log(oneEditAway("pales", "pale"));
+console.log(oneEditAway("pale", "bale"));
+console.log(oneEditAway("pale", "bake"));
